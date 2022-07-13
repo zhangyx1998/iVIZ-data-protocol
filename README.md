@@ -6,17 +6,17 @@ There are two main JSON objects involved in the synthesis of render-able data.
 
 + `reference` : Object
 
-	The `reference` object contains a list of `namespaces`,
-	each `namespace` includes a list of `ref` objects.
+    The `reference` object contains a list of `namespaces`,
+    each `namespace` includes a list of `ref` objects.
 
-	The `ref` objects can be indexed by either `number` or `string`.
-	In the first case, `ref` object can be represented by an array,
-	in the second case, `ref` object can be written as a trivial JSON object.
+    The `ref` objects can be indexed by either `number` or `string`.
+    In the first case, `ref` object can be represented by an array,
+    in the second case, `ref` object can be written as a trivial JSON object.
 
 + `instance` : Array
 
-	Each element of this array will be rendered to the canvas.
-	The `current` scope of its children is the `instance` array itself.
+    Each element of this array will be rendered to the canvas.
+    The `current` scope of its children is the `instance` array itself.
 
 ## The magic `$` symbol
 
@@ -32,60 +32,60 @@ In both instance elements and namespace elements, key starting with a dollar sym
 
 1. Single numbered reference
 
-	```js
-	// reference
-	ref = {
-		layer: [
-			{ layerName: 'layer 0' }
-		]
-	}
-	// instances
-	instances = [
-		{ $layer: 0 }
-	]
-	// result
-	result = [
-		{ layerName: 'layer 0' }
-	]
-	```
+    ```js
+    // reference
+    ref = {
+        layer: [
+            { layerName: 'layer 0' }
+        ]
+    }
+    // instances
+    instances = [
+        { $layer: 0 }
+    ]
+    // result
+    result = [
+        { layerName: 'layer 0' }
+    ]
+    ```
 
 1. Single number reference to current scope
 
-	1. `instance[1] -> instance[0]`
+    1. `instance[1] -> instance[0]`
 
-		```js
-		// instances
-		instances = [
-			{ position: [100, 200] },
-			{ $: 0 }
-		]
-		// result
-		result = [
-			{ position: [100, 200] },
-			{ position: [100, 200] }
-		]
-		```
+        ```js
+        // instances
+        instances = [
+            { position: [100, 200] },
+            { $: 0 }
+        ]
+        // result
+        result = [
+            { position: [100, 200] },
+            { position: [100, 200] }
+        ]
+        ```
 
-	1. `reference['layer'][1] -> reference['layer'][0]`
+    1. `reference['layer'][1] -> reference['layer'][0]`
 
-		```js
-		// reference
-		reference = {
-			layers: [
-				{ layerName: 'layer 0' },
-				{ $: 0 }
-			]
-		}
-		// instances
-		instances = [
-			{ position: [100, 200] }
-		]
-		// result
-		result = [
-			{ position: [100, 200] },
-			{ position: [100, 200] }
-		]
-		```
+        ```js
+        // reference
+        reference = {
+            layers: [
+                { layerName: 'layer 0' },
+                { $: 0 }
+            ]
+        }
+        // instances
+        instances = [
+            { position: [100, 200] }
+        ]
+        // result
+        result = [
+            { position: [100, 200] },
+            { position: [100, 200] }
+        ]
+        ```
 
 ## Play with implementation
 
