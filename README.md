@@ -71,19 +71,18 @@ In both instance elements and namespace elements, key starting with a dollar sym
         ```js
         // reference
         reference = {
-            layers: [
+            layer: [
                 { layerName: 'layer 0' },
                 { $: 0 }
             ]
         }
         // instances
         instances = [
-            { position: [100, 200] }
+            { $layer: 1 }
         ]
         // result
         result = [
-            { position: [100, 200] },
-            { position: [100, 200] }
+            { layerName: 'layer 0' }
         ]
         ```
 
