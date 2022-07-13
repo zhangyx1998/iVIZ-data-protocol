@@ -73,7 +73,7 @@ In both instance elements and namespace elements, key starting with a dollar sym
         reference = {
             layer: [
                 { layerName: 'layer 0' },
-                { $: 0 }
+                { $: 0 } // instance[0] referred this line
             ]
         }
         // instances
