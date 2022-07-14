@@ -20,7 +20,7 @@ const rules = {
 	],
 	// via
 	V: [
-		{ $L: [0, 1], rects: [[2, 2]] },
+		{ $L: [0, 1], rects: [[2, 2, 3, 3]] },
 		{ $L: 1 },
 		{ $L: 2 },
 	],
@@ -51,7 +51,7 @@ const instances = [
 		type: 'track',
 		X: 111,
 		Y: 222,
-		rects: [[0, 0]],
+		rects: [['metal', 0, 0, 2, 2], [123, 321]],
 		DO: 333,
 		$L: 0,
 		$V: 0
@@ -68,6 +68,9 @@ const handlers = {
 		} else {
 			return val
 		}
+	},
+	points(prev, val) {
+
 	}
 }
 
