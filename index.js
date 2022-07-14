@@ -19,7 +19,10 @@ function map(instance, currentScope, fullScope) {
 	const entries = []
 	for (const [key, val] of Object.entries(instance)) {
 		if (!key.startsWith('$')) {
-			entries.push([key, val])
+			if (typeof val !== 'object' || val === null)
+				entries.push([key, val])
+			else
+				entries.push([key, map(val, currentScope, fullScope)])
 			continue;
 		}
 		// Inject reference

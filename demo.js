@@ -1,12 +1,13 @@
 import apply from './index.js'
+import { inspect } from 'util'
 
 const rules = {
 	// Layer
 	L: [
 		{ layerName: 'layer 0', layerMeta: { a: 1, b: 2 }, $: 1 },
-		{ layerName: 'layer 1', layerMeta: { a: 3, b: 4 } },
+		{ layerType: 'metal', layerName: 'layer 1', layerMeta: { a: 3, b: 4 } },
 		{ layerName: 'layer 2', layerMeta: { a: 5, b: 6 } },
-		{ layerName: 'layer 3', layerMeta: { a: 7, b: 8 } },
+		{ layerName: 'layer 3', layerMeta: { a: 7, b: 8, color: 'red' } },
 	],
 	// Shorthand for 'direction'
 	D: [
@@ -37,12 +38,42 @@ const instances = [
 	{
 		type: 'via',
 		pos: [100, 200],
+		topLayer: { $L: 1 }, // topLayer: { type: 'metal' }
+		cutLayer: { $L: 2 },
+		bottomLayer: { $L: 3 },
 		$D: 1,
 		$V: [0, 2],
-		$L: 0,
+		layer: { $L: 0 },
 		$hello: ['wor', 'ld'],
 		$HELLO: 'WORLD',
+	},
+	{
+		type: 'track',
+		X: 111,
+		Y: 222,
+		DO: 333,
+		$L: 0
 	}
 ]
 
-console.log(apply(instances, rules))
+console.log('\n>> RULES (REFERENCE) '.padEnd(process.stdout.columns, '>'))
+
+console.log(inspect(
+	rules,
+	{ showHidden: false, depth: null, colors: true }
+))
+
+console.log('\n>> INSTANCES '.padEnd(process.stdout.columns, '>'))
+
+console.log(inspect(
+	instances,
+	{ showHidden: false, depth: null, colors: true }
+))
+
+
+console.log('\n>> RESULT '.padEnd(process.stdout.columns, '>'))
+
+console.log(inspect(
+	apply(instances, rules),
+	{ showHidden: false, depth: null, colors: true }
+))
