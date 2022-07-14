@@ -28,6 +28,17 @@ In both instance elements and namespace elements, key starting with a dollar sym
 
 + The values of the magic key will be used as injection keys. Depending on the indexing type of reference, it can be either `number`, `number[]`, `string` or `string[]`
 
+## key-mapped handlers
+
+The third optional argument specifies a map of key-mapped callbacks used for merge values with the exact same key.
+
+Each callback takes two arguments, the first being the existing value in this instance,
+the second being the current value to be added into the bundle.
+
+New value will be the return value of the callback.
+
+Please look into demo/handlers.js for example usage.
+
 ## Examples
 
 1. Single numbered reference
@@ -88,10 +99,10 @@ In both instance elements and namespace elements, key starting with a dollar sym
 
 ## Play with implementation
 
-Feel free to examine and modify the content of `demo.js`.
+Feel free to examine and modify the content of `demo/*.js`.
 
 ```sh
-node demo.js
+node demo
 ```
 
 > NodeJS version recommended to be at least `v16.0.x`
