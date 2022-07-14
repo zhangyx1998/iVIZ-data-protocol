@@ -4,7 +4,7 @@ import { inspect } from 'util'
 const rules = {
 	// Layer
 	L: [
-		{ layerName: 'layer 0', layerMeta: { a: 1, b: 2 }, $: 1 },
+		{ layerName: 'layer 0', layerMeta: { a: 1, b: 2 }, $: 1, rects: [[1, 1]] },
 		{ layerType: 'metal', layerName: 'layer 1', layerMeta: { a: 3, b: 4 } },
 		{ layerName: 'layer 2', layerMeta: { a: 5, b: 6 } },
 		{ layerName: 'layer 3', layerMeta: { a: 7, b: 8, color: 'red' } },
@@ -20,7 +20,7 @@ const rules = {
 	],
 	// via
 	V: [
-		{ $L: [0, 1] },
+		{ $L: [0, 1], rects: [[2, 2]] },
 		{ $L: 1 },
 		{ $L: 2 },
 	],
@@ -51,10 +51,25 @@ const instances = [
 		type: 'track',
 		X: 111,
 		Y: 222,
+		rects: [[0, 0]],
 		DO: 333,
-		$L: 0
+		$L: 0,
+		$V: 0
 	}
 ]
+
+const handlers = {
+	rects(prev, val) {
+		val = Array.isArray(val[0]) ? val : [val]
+		if (prev) {
+			return Array.isArray(prev?.[0])
+				? [...prev, ...val]
+				: [prev, ...val]
+		} else {
+			return val
+		}
+	}
+}
 
 console.log('\n>> RULES (REFERENCE) '.padEnd(process.stdout.columns, '>'))
 
@@ -74,6 +89,6 @@ console.log(inspect(
 console.log('\n>> RESULT '.padEnd(process.stdout.columns, '>'))
 
 console.log(inspect(
-	apply(instances, rules),
+	apply(instances, rules, handlers),
 	{ showHidden: false, depth: null, colors: true }
 ))

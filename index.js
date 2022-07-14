@@ -8,18 +8,18 @@
  * }[]} instances 
  * @param {*} rules 
  */
-export default function apply(instances, rules) {
-	return instances.map(el => map(el, instances, rules))
+export default function apply(instances, rules, handlers) {
+	return instances.map(el => map(el, instances, rules, handlers))
 }
 
-function map(instance, currentScope, fullScope) {
+function map(instance, currentScope, fullScope, handlers = {}) {
 	if (typeof instance !== 'object' || instance === null) {
 		throw new Error(`Invalid instance ${instance}`)
 	}
 	const entries = []
 	for (const [key, val] of Object.entries(instance)) {
 		if (!key.startsWith('$')) {
-			if (typeof val !== 'object' || val === null)
+			if (typeof val !== 'object' || val === null || Array.isArray(val))
 				entries.push([key, val])
 			else
 				entries.push([key, map(val, currentScope, fullScope)])
@@ -53,5 +53,10 @@ function map(instance, currentScope, fullScope) {
 			))
 		}
 	}
-	return Object.fromEntries(entries)
+	return entries.reduce((obj, [key, val]) => {
+		obj[key] = key in handlers
+			? handlers[key](obj[key], val)
+			: val
+		return obj
+	}, {})
 }
